@@ -1,0 +1,42 @@
+.inventory {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.instructions {
+  max-width: var(--measure-text);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-xs);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: clue;
+}
+
+.item > div {
+  border-radius: var(--radius-md);
+}
+
+.item > div:focus-visible {
+  outline: var(--border-width-strong) solid var(--color-gold-strong);
+  outline-offset: 3px;
+}
+
+.empty {
+  max-width: var(--measure-text);
+  padding: var(--space-6);
+  font-style: italic;
+  text-align: center;
+  color: var(--color-text-muted);
+  border: var(--border-width) dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}

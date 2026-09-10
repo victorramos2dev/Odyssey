@@ -1,0 +1,120 @@
+.quiz {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(100%, 68rem);
+  margin-inline: auto;
+  padding: var(--space-6);
+  background-color: rgb(7 21 34 / 95%);
+  border: var(--border-width) solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.guardian {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.counter {
+  font-family: var(--font-ui);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.attempt {
+  color: var(--color-warning);
+}
+
+.prompt {
+  max-width: var(--measure-text);
+  font-size: var(--font-size-xl);
+  color: var(--color-text);
+}
+
+.prompt strong {
+  color: var(--color-gold-strong);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.answers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.answer {
+  width: 100%;
+  padding: var(--space-4);
+  font-size: var(--font-size-md);
+  text-align: left;
+  color: var(--color-text);
+  background-color: rgb(216 171 84 / 6%);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard);
+}
+
+.answer:not(:disabled):hover {
+  background-color: rgb(216 171 84 / 16%);
+  border-color: var(--color-border-strong);
+}
+
+.answer:disabled {
+  cursor: default;
+}
+
+.correct {
+  color: var(--color-success);
+  background-color: rgb(143 199 160 / 14%);
+  border-color: var(--color-success);
+  opacity: 1;
+}
+
+.muted {
+  opacity: 0.4;
+}
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background-color: rgb(143 199 160 / 8%);
+  border-left: var(--border-width-strong) solid var(--color-success);
+  border-radius: var(--radius-sm);
+}
+
+.verdict {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-success);
+}
+
+.explanation {
+  max-width: var(--measure-text);
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 3rem;
+}

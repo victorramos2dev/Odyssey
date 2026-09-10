@@ -1,0 +1,82 @@
+.box {
+  position: relative;
+  z-index: var(--z-dialogue);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: min(100%, 92ch);
+  margin-inline: auto;
+  padding: var(--space-5) var(--space-6);
+  background-color: rgb(7 21 34 / 92%);
+  backdrop-filter: blur(6px);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.speaker {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-height: 4.5em;
+}
+
+.line {
+  max-width: var(--measure-text);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+}
+
+/* A narração fala com a voz do livro, não com a do personagem. */
+.narration .line {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* O coro é a tripulação inteira: sem nome, recuado por uma barra. */
+.chorus {
+  border-left: var(--border-width-strong) solid var(--color-sea);
+}
+
+.chorus .line {
+  color: #cfe3ea;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 2.5rem;
+}
+
+.hint {
+  padding: 2px var(--space-2);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-xs);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--color-text-muted);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 900px) {
+  .box {
+    padding: var(--space-4);
+  }
+
+  .line {
+    font-size: var(--font-size-md);
+  }
+}

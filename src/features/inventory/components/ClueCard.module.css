@@ -1,0 +1,112 @@
+.card {
+  display: grid;
+  grid-template-columns: 2rem 2.5rem 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background-color: var(--color-surface-raised);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: grab;
+  user-select: none;
+  transition:
+    border-color var(--duration-fast) var(--easing-standard),
+    background-color var(--duration-fast) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard);
+}
+
+.card:hover {
+  border-color: var(--color-border-strong);
+}
+
+.position {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--color-bronze);
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  color: var(--color-gold);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.name {
+  font-size: var(--font-size-md);
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+}
+
+.text {
+  max-width: var(--measure-text);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.state {
+  font-family: var(--font-ui);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+/* — Estados da pista ——————————————————————————————————————— */
+
+.card[data-state='locked'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.card[data-state='locked'] .icon {
+  color: var(--color-point-locked);
+}
+
+.card[data-state='incomplete'] {
+  border-left: var(--border-width-strong) solid var(--color-warning);
+}
+
+.card[data-state='incomplete'] .state {
+  color: var(--color-warning);
+}
+
+.card[data-state='complete'] {
+  border-left: var(--border-width-strong) solid var(--color-success);
+}
+
+.card[data-state='complete'] .state {
+  color: var(--color-success);
+}
+
+.grabbed {
+  cursor: grabbing;
+  border-color: var(--color-gold-strong);
+  box-shadow: var(--shadow-glow);
+  transform: scale(1.01);
+}
+
+.dropTarget {
+  border-color: var(--color-gold-strong);
+  border-style: dashed;
+  background-color: rgb(216 171 84 / 10%);
+}
+
+@media (max-width: 900px) {
+  .card {
+    grid-template-columns: 2rem 2.5rem 1fr;
+  }
+
+  .state {
+    grid-column: 3;
+  }
+}

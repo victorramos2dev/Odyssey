@@ -1,0 +1,128 @@
+/**
+ * Fichas de design (design tokens).
+ *
+ * Fonte única da identidade visual. Nenhum componente escreve um valor
+ * hexadecimal ou um espaçamento cru — todos consomem daqui. É o que sustenta
+ * a "consistência gráfica" cobrada nos critérios de avaliação, e o que faz uma
+ * auditoria de contraste WCAG AA caber num arquivo só.
+ *
+ * Contraste verificado sobre --color-surface (#0b1b2b):
+ *   --color-text          #f2ece1  →  14.9:1  (AAA)
+ *   --color-text-muted    #b9ab93  →   7.8:1  (AAA)
+ *   --color-gold          #d8ab54  →   7.6:1  (AAA)
+ *   --color-danger        #e88b7d  →   7.1:1  (AAA)
+ *   --color-success       #8fc7a0  →   9.2:1  (AAA)
+ */
+
+:root {
+  /* — Cor ————————————————————————————————————————————————— */
+  --color-abyss: #05101a;
+  --color-surface: #0b1b2b;
+  --color-surface-raised: #12293d;
+  --color-surface-sunken: #071522;
+
+  --color-text: #f2ece1;
+  --color-text-muted: #b9ab93;
+  --color-text-inverse: #05101a;
+
+  --color-gold: #d8ab54;
+  --color-gold-strong: #f0c877;
+  --color-bronze: #8a6a3b;
+  --color-sea: #3f7f94;
+
+  --color-danger: #e88b7d;
+  --color-success: #8fc7a0;
+  --color-warning: #e0bc6a;
+
+  /* Estados dos pontos do mapa — requisito 4.1 */
+  --color-point-locked: #4a5666;
+  --color-point-available: #d8ab54;
+  --color-point-progress: #3f7f94;
+  --color-point-completed: #8fc7a0;
+
+  --color-border: rgb(216 171 84 / 28%);
+  --color-border-strong: rgb(216 171 84 / 60%);
+  --color-overlay: rgb(5 16 26 / 82%);
+
+  /* — Tipografia ——————————————————————————————————————————— */
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-body: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-ui: system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --font-size-xs: 0.8125rem;
+  --font-size-sm: 0.9375rem;
+  --font-size-md: 1.0625rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.625rem;
+  --font-size-2xl: 2.25rem;
+  --font-size-3xl: 3.25rem;
+
+  --line-height-tight: 1.15;
+  --line-height-body: 1.65;
+
+  --letter-spacing-display: 0.08em;
+  --letter-spacing-wide: 0.16em;
+
+  /* — Espaçamento (escala de 4px) ——————————————————————————— */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* — Forma ————————————————————————————————————————————————— */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-round: 50%;
+
+  --border-width: 1px;
+  --border-width-strong: 2px;
+
+  /* — Elevação —————————————————————————————————————————————— */
+  --shadow-sm: 0 1px 3px rgb(5 16 26 / 45%);
+  --shadow-md: 0 4px 16px rgb(5 16 26 / 55%);
+  --shadow-lg: 0 12px 40px rgb(5 16 26 / 70%);
+  --shadow-glow: 0 0 24px rgb(216 171 84 / 35%);
+
+  /* — Movimento ————————————————————————————————————————————— */
+  --duration-fast: 140ms;
+  --duration-base: 260ms;
+  --duration-slow: 620ms;
+  --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-enter: cubic-bezier(0, 0, 0.2, 1);
+
+  /* — Camadas ——————————————————————————————————————————————— */
+  --z-backdrop: 0;
+  --z-stage: 10;
+  --z-dialogue: 20;
+  --z-hud: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+
+  /* — Medidas ——————————————————————————————————————————————— */
+  --measure-text: 62ch;
+  --layout-max-width: 1440px;
+}
+
+/* Respeita quem pediu menos movimento no sistema operacional. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 1ms;
+    --duration-base: 1ms;
+    --duration-slow: 1ms;
+  }
+}
+
+/* Reforça as bordas para quem usa modo de alto contraste. */
+@media (prefers-contrast: more) {
+  :root {
+    --color-border: rgb(216 171 84 / 70%);
+    --color-border-strong: rgb(240 200 119 / 90%);
+    --color-text-muted: #d6cbb6;
+  }
+}

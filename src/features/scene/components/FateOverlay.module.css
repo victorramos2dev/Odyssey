@@ -1,0 +1,73 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-5);
+  background-color: rgb(5 16 26 / 94%);
+  animation: fade-in var(--duration-slow) var(--easing-enter);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: min(100%, 44rem);
+  padding: var(--space-7);
+  text-align: center;
+  background-color: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-danger);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-danger);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  color: var(--color-text);
+}
+
+.reason {
+  color: var(--color-text-muted);
+}
+
+.moirai {
+  margin: 0;
+  padding: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-style: italic;
+  color: var(--color-gold-strong);
+  border-block: var(--border-width) solid var(--color-border);
+}
+
+.reassurance {
+  font-size: var(--font-size-sm);
+  color: var(--color-success);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

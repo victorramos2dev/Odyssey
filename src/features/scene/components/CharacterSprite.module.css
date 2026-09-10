@@ -1,0 +1,61 @@
+.sprite {
+  position: absolute;
+  bottom: 0;
+  z-index: var(--z-stage);
+  display: flex;
+  align-items: flex-end;
+  height: 78%;
+  pointer-events: none;
+  transition:
+    filter var(--duration-base) var(--easing-standard),
+    opacity var(--duration-base) var(--easing-standard),
+    transform var(--duration-base) var(--easing-standard);
+}
+
+.image {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 8px 24px rgb(5 16 26 / 70%));
+  animation: sprite-enter var(--duration-base) var(--easing-enter);
+}
+
+.left {
+  left: 2%;
+}
+
+.center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.right {
+  right: 2%;
+}
+
+/* Durante a narração o personagem recua sem sair de cena. */
+.backgrounded {
+  opacity: 0.55;
+  filter: brightness(0.6) saturate(0.8);
+}
+
+@keyframes sprite-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Em telas mais estreitas (tablet retrato) o sprite ocupa menos altura
+   para não competir com a caixa de diálogo. */
+@media (max-width: 900px) {
+  .sprite {
+    height: 62%;
+  }
+}

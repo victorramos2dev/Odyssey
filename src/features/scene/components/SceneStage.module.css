@@ -1,0 +1,25 @@
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.foreground {
+  position: relative;
+  z-index: var(--z-dialogue);
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+  padding: var(--space-5);
+  padding-block-end: var(--space-6);
+}
+
+@media (max-width: 900px) {
+  .foreground {
+    padding: var(--space-4);
+  }
+}

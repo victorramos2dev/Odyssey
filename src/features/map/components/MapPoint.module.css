@@ -1,0 +1,127 @@
+.anchor {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: transform var(--duration-fast) var(--easing-standard);
+}
+
+.point:not(:disabled):hover {
+  transform: scale(1.06);
+}
+
+.point:disabled {
+  cursor: not-allowed;
+}
+
+.marker {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-inverse);
+  background-color: var(--color-point-locked);
+  border: var(--border-width-strong) solid var(--color-abyss);
+  border-radius: var(--radius-round);
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-base) var(--easing-standard);
+}
+
+.name {
+  padding: 2px var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--color-text);
+  background-color: rgb(5 16 26 / 82%);
+  border-radius: var(--radius-sm);
+}
+
+.status {
+  font-family: var(--font-ui);
+  font-size: 0.6875rem;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* — Estados do ponto (requisito 4.1) ——————————————————————— */
+/* A cor nunca é o único sinal: o rótulo textual acompanha sempre. */
+
+.point[data-status='locked'] .marker {
+  background-color: var(--color-point-locked);
+  opacity: 0.7;
+}
+
+.point[data-status='available'] .marker {
+  background-color: var(--color-point-available);
+  box-shadow: var(--shadow-glow);
+  animation: beacon 2.6s ease-in-out infinite;
+}
+
+.point[data-status='available'] .status {
+  color: var(--color-point-available);
+}
+
+.point[data-status='inProgress'] .marker {
+  background-color: var(--color-point-progress);
+  color: var(--color-text);
+}
+
+.point[data-status='inProgress'] .status {
+  color: var(--color-point-progress);
+}
+
+.point[data-status='completed'] .marker {
+  background-color: var(--color-point-completed);
+}
+
+.point[data-status='completed'] .status {
+  color: var(--color-point-completed);
+}
+
+.tooltip {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  z-index: var(--z-overlay);
+  width: max-content;
+  max-width: 18rem;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  background-color: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transform: translate(-50%, var(--space-2));
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--easing-standard);
+}
+
+.point:hover + .tooltip,
+.point:focus-visible ~ .tooltip {
+  opacity: 1;
+}
+
+@keyframes beacon {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(216 171 84 / 55%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 12px rgb(216 171 84 / 0%);
+  }
+}

@@ -1,0 +1,52 @@
+.map {
+  position: relative;
+  width: 100%;
+  /* Proporção fixa: os pontos são percentuais e precisam de uma tela estável. */
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  min-height: 24rem;
+}
+
+.trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.trailRemaining,
+.trailTravelled {
+  fill: none;
+  /* `non-scaling-stroke` mantém a espessura constante apesar do viewBox esticado. */
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trailRemaining {
+  stroke: var(--color-point-locked);
+  stroke-width: 2;
+  stroke-dasharray: 6 7;
+  opacity: 0.75;
+}
+
+.trailTravelled {
+  stroke: var(--color-gold);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px rgb(216 171 84 / 45%));
+}
+
+.points {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 900px) {
+  .map {
+    aspect-ratio: 4 / 3;
+  }
+}

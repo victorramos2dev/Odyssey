@@ -1,0 +1,15 @@
+.banner {
+  position: fixed;
+  inset-block-end: var(--space-4);
+  inset-inline-start: 50%;
+  z-index: var(--z-toast);
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-xs);
+  color: var(--color-warning);
+  background-color: var(--color-surface-sunken);
+  border: var(--border-width) solid var(--color-warning);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transform: translateX(-50%);
+}

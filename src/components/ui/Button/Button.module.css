@@ -1,0 +1,91 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  text-align: center;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard),
+    transform var(--duration-fast) var(--easing-standard);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.button:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+/* — Tamanhos ——————————————————————————————————————————————— */
+
+.sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-xs);
+}
+
+.md {
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--font-size-sm);
+}
+
+.lg {
+  padding: var(--space-4) var(--space-7);
+  font-size: var(--font-size-md);
+}
+
+/* — Variantes ——————————————————————————————————————————————— */
+
+.primary {
+  background-color: var(--color-gold);
+  color: var(--color-text-inverse);
+  border-color: var(--color-gold);
+}
+
+.primary:not(:disabled):hover {
+  background-color: var(--color-gold-strong);
+  border-color: var(--color-gold-strong);
+}
+
+.secondary {
+  background-color: rgb(216 171 84 / 8%);
+  color: var(--color-gold-strong);
+  border-color: var(--color-border-strong);
+}
+
+.secondary:not(:disabled):hover {
+  background-color: rgb(216 171 84 / 18%);
+}
+
+.ghost {
+  color: var(--color-text-muted);
+  border-color: transparent;
+}
+
+.ghost:not(:disabled):hover {
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.danger {
+  background-color: rgb(232 139 125 / 12%);
+  color: var(--color-danger);
+  border-color: rgb(232 139 125 / 45%);
+}
+
+.danger:not(:disabled):hover {
+  background-color: rgb(232 139 125 / 22%);
+}
+
+.fullWidth {
+  width: 100%;
+}

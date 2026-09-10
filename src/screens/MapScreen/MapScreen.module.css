@@ -1,0 +1,11 @@
+.hint {
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+  text-align: center;
+  color: var(--color-text-muted);
+  background-color: rgb(7 21 34 / 78%);
+  border: var(--border-width) dashed var(--color-border);
+  border-radius: var(--radius-md);
+}

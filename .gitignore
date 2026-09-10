@@ -1,0 +1,35 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+dev-dist/
+*.tsbuildinfo
+
+# Arte-fonte (não otimizada, ~300 MB) — o build consome public/assets/
+img/
+ImgBase/
+Personagens/
+
+# Roteiro (mantido fora do versionamento conforme .gitignore original)
+roteiro/
+
+# Ambiente
+.env
+.env.local
+.env.*.local
+
+# Editor / SO
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Cobertura de testes
+coverage/
