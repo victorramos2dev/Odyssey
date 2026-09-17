@@ -44,7 +44,10 @@ só o primeiro começa aberto.
 
 Dentro de um capítulo:
 
-- **Espaço**, **Enter** ou **→** avançam a fala.
+- **Clique** no palco, **Espaço**, **Enter** ou **→** avançam a fala.
+- Ir ao **mapa** ou ao **inventário** no meio de uma cena não perde o lugar:
+  voltar ao capítulo retoma na mesma fala. Só entrar noutro capítulo troca o
+  marcador.
 - **Escolhas** de Odisseu podem matar. Morrer devolve ao início do capítulo —
   **as pistas já coletadas nunca se perdem**.
 - **Quizzes** nunca matam. Errar leva ao Altar: arraste as três oferendas na

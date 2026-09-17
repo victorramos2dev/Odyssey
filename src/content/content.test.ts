@@ -9,11 +9,12 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { getBackground } from '@content/backgrounds.ts';
+import { BACKGROUNDS, getBackground } from '@content/backgrounds.ts';
 import { CHAPTERS, hasContent } from '@content/chapters';
 import { CHARACTERS } from '@content/characters.ts';
 import { TREASURES, TREASURE_LIST } from '@content/treasures.ts';
 import type { SceneNode } from '@domain/types';
+import { resolveAsset } from '@services/assets/asset-resolver.ts';
 
 const playableChapters = CHAPTERS.filter(hasContent);
 
@@ -151,6 +152,31 @@ describe('elenco', () => {
       for (const expression of ['neutral', 'intense', 'pleased', 'displeased'] as const) {
         expect(character.sprites[expression].length, `${character.id}/${expression}`).toBeGreaterThan(0);
       }
+    }
+  });
+});
+
+describe('arte registrada existe em disco', () => {
+  /**
+   * A rede que faltava. Quando um arquivo de `img/` é renomeado ou removido,
+   * o registro continua compilando — o caminho é só uma string — e a falha
+   * aparece como sprite em branco no meio de uma cena. Aqui ela aparece como
+   * teste vermelho.
+   *
+   * Rode `npm run assets:optimize` antes, se acabou de mexer na arte.
+   */
+
+  it('todo sprite do elenco aponta para um arquivo existente', () => {
+    for (const character of Object.values(CHARACTERS)) {
+      for (const [expression, path] of Object.entries(character.sprites)) {
+        expect(resolveAsset(path), `${character.id}/${expression} → ${path}`).not.toBeNull();
+      }
+    }
+  });
+
+  it('todo cenário registrado aponta para um arquivo existente', () => {
+    for (const [id, definition] of Object.entries(BACKGROUNDS)) {
+      expect(resolveAsset(definition.path), `cenário ${id} → ${definition.path}`).not.toBeNull();
     }
   });
 });

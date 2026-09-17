@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
 import type { SceneNode } from '../types/scene.ts';
-import { findNodeIndex, resolveEntryIndex, stepScene } from './scene-runner.ts';
+import {
+  findLastNodeOfKind,
+  findNodeIndex,
+  resolveEntryIndex,
+  resolveResumeIndex,
+  stepScene,
+} from './scene-runner.ts';
 
 const NODES: readonly SceneNode[] = [
   { kind: 'checkpoint', chapter: 'troia' },
@@ -59,5 +65,36 @@ describe('desvios e retomada', () => {
 
   it('cai no início quando o checkpoint aponta para um nó que sumiu', () => {
     expect(resolveEntryIndex(NODES, 'removido-numa-revisao')).toBe(0);
+  });
+});
+
+describe('retomada no meio da cena', () => {
+  it('volta ao nó gravado quando ele ainda existe', () => {
+    expect(resolveResumeIndex(NODES, 6)).toBe(6);
+  });
+
+  it('prefere a posição gravada ao checkpoint', () => {
+    expect(resolveResumeIndex(NODES, 2, 'partida')).toBe(2);
+  });
+
+  it('cai no checkpoint quando a posição gravada saiu do capítulo', () => {
+    // Um capítulo encurtado numa revisão do roteiro não pode prender o jogador.
+    expect(resolveResumeIndex(NODES, 99, 'partida')).toBe(6);
+    expect(resolveResumeIndex(NODES, -1)).toBe(0);
+    expect(resolveResumeIndex(NODES, 2.5)).toBe(0);
+  });
+
+  it('sem posição gravada, usa o checkpoint', () => {
+    expect(resolveResumeIndex(NODES, undefined)).toBe(0);
+  });
+
+  it('remonta o cenário a partir do último já passado', () => {
+    expect(findLastNodeOfKind(NODES, 5, ['background'])?.background).toBe(
+      'muralhas_troia_amanhecer',
+    );
+  });
+
+  it('não olha para a frente de onde o jogador está', () => {
+    expect(findLastNodeOfKind(NODES, 0, ['background'])).toBeNull();
   });
 });

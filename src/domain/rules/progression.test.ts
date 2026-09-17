@@ -102,3 +102,30 @@ describe('contador de tripulação', () => {
     expect(setCrewCount(createInitialGameState(CHAPTERS), -10).crewCount).toBe(0);
   });
 });
+
+describe('marcador de leitura', () => {
+  it('começa vazio', () => {
+    expect(createInitialGameState(CHAPTERS).bookmark).toBeNull();
+  });
+
+  it('é apagado quando o capítulo marcado termina', () => {
+    const reading = {
+      ...createInitialGameState(CHAPTERS),
+      bookmark: { chapterId: 'primeiro', nodeIndex: 12 },
+    };
+
+    expect(completeChapter(reading, first).bookmark).toBeNull();
+  });
+
+  it('sobrevive quando termina um capítulo diferente do marcado', () => {
+    const reading = {
+      ...createInitialGameState(CHAPTERS),
+      bookmark: { chapterId: 'segundo', nodeIndex: 3 },
+    };
+
+    expect(completeChapter(reading, first).bookmark).toEqual({
+      chapterId: 'segundo',
+      nodeIndex: 3,
+    });
+  });
+});

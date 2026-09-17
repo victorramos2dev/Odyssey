@@ -11,7 +11,13 @@
  */
 
 import { isPassthroughNode } from '../types/scene.ts';
-import type { BackgroundId, ChapterId, NodeId, SceneNode } from '../types/scene.ts';
+import type {
+  BackgroundId,
+  ChapterId,
+  NodeId,
+  SceneNode,
+  SceneNodeKind,
+} from '../types/scene.ts';
 import type { TreasureId } from '../types/treasure.ts';
 
 /** Mudança de estado causada por um nó de passagem. */
@@ -95,6 +101,55 @@ export const stepScene = (nodes: readonly SceneNode[], startIndex: number): Scen
 /** Índice de um nó rotulado. `-1` quando o rótulo não existe. */
 export const findNodeIndex = (nodes: readonly SceneNode[], nodeId: NodeId): number =>
   nodes.findIndex((node) => node.id === nodeId);
+
+/**
+ * Onde o jogador volta a pisar ao reabrir a cena.
+ *
+ * A posição gravada só vale se ainda apontar para um nó que existe: um
+ * capítulo encurtado numa revisão do roteiro não pode deixar o jogador num
+ * índice que já não está lá. Sem posição válida, vale o checkpoint.
+ */
+export const resolveResumeIndex = (
+  nodes: readonly SceneNode[],
+  savedIndex: number | undefined,
+  checkpointNodeId?: NodeId,
+): number => {
+  if (
+    savedIndex !== undefined &&
+    Number.isInteger(savedIndex) &&
+    savedIndex >= 0 &&
+    savedIndex < nodes.length
+  ) {
+    return savedIndex;
+  }
+
+  return resolveEntryIndex(nodes, checkpointNodeId);
+};
+
+/**
+ * O nó mais recente de um dos tipos pedidos, olhando para trás a partir de
+ * `fromIndex` (inclusive).
+ *
+ * É assim que o palco se remonta ao retomar no meio de uma cena: o cenário é o
+ * último `background` já passado, e o sprite é o último personagem que falou.
+ */
+export const findLastNodeOfKind = <TKind extends SceneNodeKind>(
+  nodes: readonly SceneNode[],
+  fromIndex: number,
+  kinds: readonly TKind[],
+): Extract<SceneNode, { kind: TKind }> | null => {
+  const accepted: readonly SceneNodeKind[] = kinds;
+
+  for (let index = Math.min(fromIndex, nodes.length - 1); index >= 0; index -= 1) {
+    const node = nodes[index];
+
+    if (node !== undefined && accepted.includes(node.kind)) {
+      return node as Extract<SceneNode, { kind: TKind }>;
+    }
+  }
+
+  return null;
+};
 
 /**
  * Ponto de entrada do capítulo: o começo, ou o nó do checkpoint quando o

@@ -48,6 +48,7 @@ export const createInitialGameState = (chapters: readonly Chapter[]): GameState 
     crewCount: INITIAL_CREW_COUNT,
     route: null,
     checkpoint: { chapterId: first.id },
+    bookmark: null,
     riddleSolved: false,
     tutorialSeen: false,
     savedAt: Date.now(),
@@ -99,7 +100,10 @@ export const startChapter = (state: GameState, chapterId: ChapterId): GameState 
  * apenas se ainda estiver bloqueado — reconcluir não rebaixa um ponto já feito.
  */
 export const completeChapter = (state: GameState, chapter: Chapter): GameState => {
-  const completed = withPointStatus(state, chapter.id, 'completed');
+  // Capítulo terminado não tem onde retomar: voltar a ele recomeça do início.
+  const withoutBookmark =
+    state.bookmark?.chapterId === chapter.id ? { ...state, bookmark: null } : state;
+  const completed = withPointStatus(withoutBookmark, chapter.id, 'completed');
 
   if (chapter.unlocks === null) return completed;
 

@@ -19,6 +19,10 @@ interface Rule {
 
 const RULES: readonly Rule[] = [
   {
+    title: 'Podes sair e voltar',
+    body: 'Abrir o mapa ou o inventário no meio de uma cena não te faz perder o lugar. Voltas exatamente onde paraste — só entrar noutro capítulo pelo mapa troca o marcador.',
+  },
+  {
     title: 'A viagem é sequencial',
     body: 'Dez pontos, um de cada vez. O seguinte só abre quando o atual estiver concluído. O mapa mostra a trilha inteira desde o começo — para que saibas o tamanho do que tens pela frente.',
   },
@@ -28,7 +32,7 @@ const RULES: readonly Rule[] = [
   },
   {
     title: 'Errar o quiz nunca mata',
-    body: 'O Guardião ofende-se e exige uma oferenda no altar: arrasta libação, grão e louro, nesta ordem. Feito o ritual, as perguntas recomeçam. Não há limite de tentativas.',
+    body: 'O Guardião ofende-se e exige uma oferenda no altar: arrasta as três oferendas que ele pede, na ordem certa. Feito o ritual, as perguntas recomeçam. Não há limite de tentativas.',
   },
   {
     title: 'Escolher errado, sim',
@@ -49,7 +53,7 @@ const RULES: readonly Rule[] = [
 ];
 
 const CONTROLS: readonly [string, string][] = [
-  ['Espaço · Enter · →', 'Avança a fala'],
+  ['Clique · Espaço · Enter · →', 'Avança a fala'],
   ['Tab · Shift + Tab', 'Percorre os controles'],
   ['Espaço sobre uma peça', 'Pega e solta ao arrastar'],
   ['Alt + ↑ ↓', 'Move uma pista no inventário'],
@@ -69,7 +73,7 @@ export function TutorialScreen() {
     <Screen
       eyebrow="Antes de zarpar"
       title="Como se joga"
-      lead="Vinte anos de mar cabem em sete regras."
+      lead="Vinte anos de mar cabem em oito regras."
       background="menu_mapa"
       actions={
         <Button variant="primary" size="lg" onClick={beginAdventure}>

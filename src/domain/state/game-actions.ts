@@ -6,7 +6,7 @@
  */
 
 import type { Chapter } from '../types/chapter.ts';
-import type { Checkpoint, GameState } from '../types/game-state.ts';
+import type { Checkpoint, GameState, SceneBookmark } from '../types/game-state.ts';
 import type { QuizStatus } from '../types/quiz.ts';
 import type { ChapterId, RouteId } from '../types/scene.ts';
 import type { TreasureId } from '../types/treasure.ts';
@@ -25,5 +25,7 @@ export type GameAction =
   | { readonly type: 'crew/set'; readonly count: number }
   | { readonly type: 'route/select'; readonly route: RouteId }
   | { readonly type: 'checkpoint/set'; readonly checkpoint: Checkpoint }
+  /** Grava onde o jogador está na cena. Entrar noutro capítulo sobrescreve. */
+  | { readonly type: 'scene/bookmark'; readonly bookmark: SceneBookmark }
   | { readonly type: 'riddle/solve' }
   | { readonly type: 'tutorial/seen' };

@@ -60,17 +60,6 @@
   min-height: 2.5rem;
 }
 
-.hint {
-  padding: 2px var(--space-2);
-  font-family: var(--font-ui);
-  font-size: var(--font-size-xs);
-  letter-spacing: normal;
-  text-transform: none;
-  color: var(--color-text-muted);
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
 @media (max-width: 900px) {
   .box {
     padding: var(--space-4);

@@ -52,6 +52,9 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
     case 'checkpoint/set':
       return { ...state, checkpoint: action.checkpoint };
 
+    case 'scene/bookmark':
+      return { ...state, bookmark: action.bookmark };
+
     case 'riddle/solve':
       return { ...state, riddleSolved: true };
 

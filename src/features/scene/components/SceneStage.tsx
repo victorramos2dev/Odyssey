@@ -11,7 +11,7 @@ import { getCharacter } from '@content/characters.ts';
 import type { ChapterId, SceneNode } from '@domain/types';
 import { useKeyboardAdvance } from '@hooks/useKeyboardAdvance.ts';
 import { QuizPanel } from '@features/quiz/components/QuizPanel.tsx';
-import type { ReactNode } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 
 import type { SceneRunner } from '../hooks/useSceneRunner.ts';
 import { Backdrop } from './Backdrop.tsx';
@@ -20,6 +20,9 @@ import { ChoicePrompt } from './ChoicePrompt.tsx';
 import { DialogueBox } from './DialogueBox.tsx';
 import { FateOverlay } from './FateOverlay.tsx';
 import styles from './SceneStage.module.css';
+
+/** Controles que tratam o próprio clique e não devem, também, avançar a cena. */
+const INTERACTIVE_SELECTOR = 'button, a, input, select, textarea, [role="button"]';
 
 interface SceneStageProps {
   readonly runner: SceneRunner;
@@ -40,8 +43,24 @@ export function SceneStage({ runner, chapterId, hud, onLeave }: SceneStageProps)
 
   useKeyboardAdvance(runner.advance, !isBlocked);
 
+  /**
+   * Clique com o botão esquerdo em qualquer parte do palco avança a fala.
+   *
+   * Cliques que nascem num controle (o botão Continuar, o HUD, uma opção de
+   * escolha) são ignorados aqui — senão um único clique no Continuar valeria
+   * por dois e pularia uma fala.
+   */
+  const advanceOnClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (isBlocked || event.button !== 0) return;
+    if (event.target instanceof Element && event.target.closest(INTERACTIVE_SELECTOR)) return;
+
+    runner.advance();
+  };
+
   return (
-    <div className={styles['stage']}>
+    // `role="presentation"`: o clique no palco é um atalho de mouse. O caminho
+    // acessível equivalente já existe — o botão Continuar e o teclado.
+    <div className={styles['stage']} role="presentation" onClick={advanceOnClick}>
       <Backdrop background={runner.background} dimmed />
 
       {runner.speaker !== null && (

@@ -36,6 +36,17 @@ const hasValidScalars = (value: Record<string, unknown>): boolean =>
   typeof value['savedAt'] === 'number' &&
   (value['route'] === null || typeof value['route'] === 'string');
 
+const hasValidBookmark = (value: Record<string, unknown>): boolean => {
+  const bookmark = value['bookmark'];
+  if (bookmark === null) return true;
+
+  return (
+    isRecord(bookmark) &&
+    typeof bookmark['chapterId'] === 'string' &&
+    typeof bookmark['nodeIndex'] === 'number'
+  );
+};
+
 const hasValidCheckpoint = (value: Record<string, unknown>): boolean => {
   const checkpoint = value['checkpoint'];
 
@@ -47,4 +58,18 @@ export const isPersistedGameState = (value: unknown): value is GameState =>
   value['schemaVersion'] === SAVE_SCHEMA_VERSION &&
   hasValidCollections(value) &&
   hasValidScalars(value) &&
-  hasValidCheckpoint(value);
+  hasValidCheckpoint(value) &&
+  hasValidBookmark(value);
+
+/**
+ * Preenche campos acrescentados depois da versão 1 do save.
+ *
+ * Um campo novo não justifica subir `SAVE_SCHEMA_VERSION` — isso apagaria o
+ * progresso de todo mundo. Quando existe um padrão seguro, o save antigo é
+ * completado aqui, antes da validação, e segue válido.
+ */
+export const upgradePersistedState = (value: unknown): unknown => {
+  if (!isRecord(value)) return value;
+
+  return 'bookmark' in value ? value : { ...value, bookmark: null };
+};

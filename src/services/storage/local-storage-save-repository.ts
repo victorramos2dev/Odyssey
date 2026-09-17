@@ -8,7 +8,7 @@
  */
 
 import type { GameState } from '@domain/types';
-import { isPersistedGameState } from './game-state-schema.ts';
+import { isPersistedGameState, upgradePersistedState } from './game-state-schema.ts';
 import type { SaveRepository } from './save-repository.ts';
 
 export const SAVE_STORAGE_KEY = 'odyssey:save:v1';
@@ -24,7 +24,7 @@ export class LocalStorageSaveRepository implements SaveRepository {
     if (raw === null) return null;
 
     try {
-      const parsed: unknown = JSON.parse(raw);
+      const parsed = upgradePersistedState(JSON.parse(raw));
 
       return isPersistedGameState(parsed) ? parsed : null;
     } catch {

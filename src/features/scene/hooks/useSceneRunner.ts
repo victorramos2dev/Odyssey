@@ -9,9 +9,15 @@
  * hook é só a ponte entre ela, o React e o despacho de ações.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { findNodeIndex, resolveEntryIndex, stepScene } from '@domain/rules/scene-runner.ts';
+import {
+  findLastNodeOfKind,
+  findNodeIndex,
+  resolveEntryIndex,
+  resolveResumeIndex,
+  stepScene,
+} from '@domain/rules/scene-runner.ts';
 import type { SceneEffect } from '@domain/rules/scene-runner.ts';
 import type {
   BackgroundId,
@@ -55,8 +61,12 @@ export interface SceneRunner {
 
 interface UseSceneRunnerOptions {
   readonly nodes: readonly SceneNode[];
-  /** Nó de retomada; ausente começa do início. */
+  /** Nó do checkpoint: para onde o Fio Partido devolve. Ausente é o início. */
   readonly startNodeId?: NodeId;
+  /** Posição gravada numa visita anterior. Tem precedência sobre o checkpoint. */
+  readonly resumeIndex?: number;
+  /** Avisado a cada nó em que a cena para — é o que alimenta o marcador. */
+  readonly onPositionChange?: (nodeIndex: number) => void;
   /** Chamado quando o último nó é ultrapassado. */
   readonly onFinish: () => void;
   /** Chamado ao encontrar um nó `tutorial`. */
@@ -91,27 +101,38 @@ const speakerOf = (node: SceneNode | undefined): StageSpeaker | null => {
 export const useSceneRunner = ({
   nodes,
   startNodeId,
+  resumeIndex,
+  onPositionChange,
   onFinish,
   onTutorial,
 }: UseSceneRunnerOptions): SceneRunner => {
   const { dispatch } = useGame();
 
   /**
-   * A entrada da cena é calculada de forma síncrona, não num efeito: o
-   * primeiro quadro já sai com o cenário e o sprite certos, sem o piscar de
-   * uma cena vazia nem um render em cascata.
+   * A entrada da cena é calculada uma única vez, na montagem, e de forma
+   * síncrona: o primeiro quadro já sai com o cenário e o sprite certos.
+   *
+   * "Uma única vez" importa. Esta própria cena grava o marcador a cada passo,
+   * o que muda `resumeIndex` lá em cima — se a entrada dependesse dele, a cena
+   * recomeçaria a cada fala.
    */
-  const entry = useMemo(
-    () => stepScene(nodes, resolveEntryIndex(nodes, startNodeId)),
-    [nodes, startNodeId],
+  const [entry] = useState(() =>
+    stepScene(nodes, resolveResumeIndex(nodes, resumeIndex, startNodeId)),
   );
 
   const [index, setIndex] = useState(() => entry.index ?? nodes.length);
-  const [background, setBackground] = useState<BackgroundId | null>(() =>
-    lastBackgroundOf(entry.effects),
+
+  // Ao retomar no meio da cena, o palco é remontado a partir do que já passou:
+  // o último cenário trocado e o último personagem que falou.
+  const [background, setBackground] = useState<BackgroundId | null>(
+    () =>
+      findLastNodeOfKind(nodes, (entry.index ?? nodes.length) - 1, ['background'])?.background ??
+      null,
   );
   const [speaker, setSpeaker] = useState<StageSpeaker | null>(() =>
-    entry.index === null ? null : speakerOf(nodes[entry.index]),
+    entry.index === null
+      ? null
+      : speakerOf(findLastNodeOfKind(nodes, entry.index, ['speech', 'chorus']) ?? undefined),
   );
   const [choiceResponse, setChoiceResponse] = useState<string | null>(null);
   const [pendingConsequence, setPendingConsequence] = useState<ChoiceConsequence | null>(null);
@@ -121,9 +142,11 @@ export const useSceneRunner = ({
   // `onFinish` pode ser recriado a cada render da tela; guardá-lo numa ref
   // evita reiniciar a cena por causa de uma identidade de função nova.
   const onFinishRef = useRef(onFinish);
+  const onPositionChangeRef = useRef(onPositionChange);
   useEffect(() => {
     onFinishRef.current = onFinish;
-  }, [onFinish]);
+    onPositionChangeRef.current = onPositionChange;
+  }, [onFinish, onPositionChange]);
 
   /** Leva os efeitos ao estado do jogo. Só despacha — não mexe no palco. */
   const dispatchEffects = useCallback(
@@ -160,6 +183,7 @@ export const useSceneRunner = ({
   // Os efeitos da entrada só chegam ao estado do jogo depois da montagem.
   useEffect(() => {
     dispatchEffects(entry.effects);
+    if (entry.index !== null) onPositionChangeRef.current?.(entry.index);
   }, [dispatchEffects, entry]);
 
   /** Caminha a partir de `from` e assenta a cena no primeiro nó interativo. */
@@ -182,8 +206,25 @@ export const useSceneRunner = ({
       if (nextSpeaker !== null) setSpeaker(nextSpeaker);
 
       setIndex(step.index);
+      onPositionChangeRef.current?.(step.index);
     },
     [dispatchEffects, nodes],
+  );
+
+  /**
+   * O fio parte-se.
+   *
+   * O marcador volta ao checkpoint no mesmo instante, e não só ao reatar: se o
+   * jogador fugir para o mapa a partir do diálogo das Moiras, reentrar no
+   * capítulo não pode devolvê-lo à escolha que o matou — isso tornaria a morte
+   * uma segunda tentativa grátis em vez de um recomeço.
+   */
+  const breakThread = useCallback(
+    (reason: string) => {
+      setDeathReason(reason);
+      onPositionChangeRef.current?.(resolveEntryIndex(nodes, startNodeId));
+    },
+    [nodes, startNodeId],
   );
 
   const applyConsequence = useCallback(
@@ -200,11 +241,11 @@ export const useSceneRunner = ({
           goTo(findNodeIndex(nodes, consequence.target));
           break;
         case 'death':
-          setDeathReason(consequence.reason);
+          breakThread(consequence.reason);
           break;
       }
     },
-    [dispatch, goTo, nodes],
+    [breakThread, dispatch, goTo, nodes],
   );
 
   const advance = useCallback(() => {
@@ -223,7 +264,7 @@ export const useSceneRunner = ({
     const node = nodes[index];
 
     if (node?.kind === 'death') {
-      setDeathReason(node.reason);
+      breakThread(node.reason);
 
       return;
     }
@@ -237,6 +278,7 @@ export const useSceneRunner = ({
     goTo(index + 1);
   }, [
     applyConsequence,
+    breakThread,
     deathReason,
     goTo,
     index,

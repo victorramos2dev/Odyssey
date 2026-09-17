@@ -49,11 +49,8 @@ export const CHARACTERS: Readonly<Record<CharacterId, Character>> = {
     displayName: 'A Tripulação',
     defaultPosition: 'center',
     isChorus: true,
-    sprites: {
-      ...uniformSprites(`${P}/eoriluco/tripulacao.webp`),
-      intense: `${P}/eoriluco/euriloco-bando.webp`,
-      displeased: `${P}/eoriluco/euriloco-bando.webp`,
-    },
+    // Duas expressões bastam ao coro, e a arte de grupo é uma só.
+    sprites: uniformSprites(`${P}/eoriluco/euriloco-bando.webp`),
   },
 
   atena: {
@@ -145,8 +142,10 @@ export const CHARACTERS: Readonly<Record<CharacterId, Character>> = {
     displayName: 'As Sereias',
     defaultPosition: 'right',
     sprites: {
-      ...uniformSprites(`${P}/sereias/sereias.webp`),
+      neutral: `${P}/sereias/sereias.webp`,
+      intense: `${P}/sereias/sereias-intensas.webp`,
       pleased: `${P}/sereias/sereias-satisfeitas.webp`,
+      displeased: `${P}/sereias/sereias-contrariadas.webp`,
     },
   },
 
@@ -154,8 +153,13 @@ export const CHARACTERS: Readonly<Record<CharacterId, Character>> = {
     id: 'scylla',
     displayName: 'Scylla',
     defaultPosition: 'right',
-    // Sem sprite próprio em `img/personagens`: usa a arte do covil até haver um.
-    sprites: uniformSprites('cenarios/carybdis-scylla/scylla.webp'),
+    // A pasta de origem grafa "Scyla" com um L — grafia mantida de propósito.
+    sprites: {
+      neutral: `${P}/scyla/scylla.webp`,
+      intense: `${P}/scyla/scylla-intensa.webp`,
+      pleased: `${P}/scyla/scylla-satisfeita.webp`,
+      displeased: `${P}/scyla/scylla-contrariada.webp`,
+    },
   },
 
   apolo: {

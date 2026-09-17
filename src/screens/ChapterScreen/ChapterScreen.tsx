@@ -49,13 +49,27 @@ function ChapterStage({ chapterId }: ChapterStageProps) {
     goToMap();
   }, [chapter, dispatch, goToMap]);
 
-  // Retoma do checkpoint apenas quando ele pertence a este capítulo.
-  const resumeNodeId =
+  // O checkpoint só vale se pertencer a este capítulo.
+  const checkpointNodeId =
     state.checkpoint.chapterId === chapterId ? state.checkpoint.nodeId : undefined;
+
+  // O marcador só vale se for deste capítulo. Entrar noutro pelo mapa faz a
+  // cena nova gravar o seu — e é isso, e só isso, que perde a posição antiga.
+  const resumeIndex =
+    state.bookmark?.chapterId === chapterId ? state.bookmark.nodeIndex : undefined;
+
+  const saveBookmark = useCallback(
+    (nodeIndex: number) => {
+      dispatch({ type: 'scene/bookmark', bookmark: { chapterId, nodeIndex } });
+    },
+    [chapterId, dispatch],
+  );
 
   const runner = useSceneRunner({
     nodes: chapter?.nodes ?? [],
-    ...(resumeNodeId === undefined ? {} : { startNodeId: resumeNodeId }),
+    ...(checkpointNodeId === undefined ? {} : { startNodeId: checkpointNodeId }),
+    ...(resumeIndex === undefined ? {} : { resumeIndex }),
+    onPositionChange: saveBookmark,
     onFinish: finishChapter,
   });
 

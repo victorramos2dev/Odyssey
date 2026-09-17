@@ -11,9 +11,6 @@ img/
 ImgBase/
 Personagens/
 
-# Roteiro (mantido fora do versionamento conforme .gitignore original)
-roteiro/
-
 # Ambiente
 .env
 .env.local

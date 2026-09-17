@@ -86,8 +86,8 @@ memória.
 | Organização das pistas | ✅ | `inventoryOrder` |
 | LocalStorage | ✅ | `LocalStorageSaveRepository` |
 
-> Extras persistidos: contador de tripulação, rota do estreito, checkpoint e
-> enigma resolvido. Gravação automática a cada transição de estado, em
+> Extras persistidos: contador de tripulação, rota do estreito, checkpoint,
+> marcador de leitura (a fala exata em que o jogador parou) e enigma resolvido. Gravação automática a cada transição de estado, em
 > `GameProvider.tsx`.
 
 ---
@@ -193,6 +193,8 @@ O `status` não vive no capítulo: é estado de jogo, e mora em `GameState.point
    decisão: ignorar, ou criar um uso com sentido narrativo.
 3. **Coordenadas do mapa** — calibrar `mapCoordinates` contra a arte de
    `menus/mapa-completo.webp`.
-4. **Lacunas de arte** — `praia_troia` e `figueira_penhasco` emprestam a
-   pintura de outro cenário. Ver `ART_GAPS` em `src/content/backgrounds.ts`.
-5. **Sprite de Scylla** — não existe em `img/personagens`; usa a arte do covil.
+4. **Arte faltando** — tesouros, oferendas, itens de minijogo e três cenários.
+   Lista completa com especificação em [`IMAGENS-NECESSARIAS.md`](IMAGENS-NECESSARIAS.md).
+5. **Arte sem uso** — `personagens/odisseu/odisseu-feliz-ao-sol.webp` foi
+   adicionada e ainda não tem cena. As quatro expressões de Odisseu já estão
+   preenchidas, então ela espera um momento próprio no roteiro.

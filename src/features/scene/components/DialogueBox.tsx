@@ -3,8 +3,8 @@
  *
  * Acessibilidade: o bloco de texto é uma região `aria-live` — quando o nó
  * muda, o leitor de tela anuncia a fala nova sozinho, sem que o foco precise
- * saltar. O avanço tem botão próprio, além do atalho de teclado, porque
- * "clique em qualquer lugar" não é operável por teclado.
+ * saltar. O avanço tem botão próprio, além do clique no palco e do teclado,
+ * porque "clique em qualquer lugar" não é operável por teclado.
  */
 
 import type { ReactNode } from 'react';
@@ -51,9 +51,6 @@ export function DialogueBox({
         {footer ?? (
           <Button variant="ghost" size="sm" onClick={onAdvance}>
             Continuar
-            <span className={styles['hint']} aria-hidden="true">
-              Espaço
-            </span>
           </Button>
         )}
       </footer>
